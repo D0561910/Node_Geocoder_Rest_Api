@@ -50,6 +50,25 @@ app.post("/api/geocoder/coordinate", (request, response) => {
     });
 });
 
+app.post("/api/geocoder/address", (request, response) => {
+  var addr = `${request.body.address}`;
+  if (addr.trim() === "") response.json({ error: "Invaild Address !!!" });
+  let options = {
+    provider: "openstreetmap"
+  };
+
+  let geoCoder = nodeGeocoder(options);
+
+  geoCoder
+    .geocode({ `${addr}` })
+    .then(res => {
+      response.json({ res });
+    })
+    .catch(err => {
+      response.json({ err });
+    });
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
