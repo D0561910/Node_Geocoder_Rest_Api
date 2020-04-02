@@ -64,7 +64,7 @@ app.post("/api/geocoder/address", (request, response) => {
   let geoCoder = nodeGeocoder(options);
 
   geoCoder
-    .geocode( addr )
+    .geocode(`${addr}`)
     .then(res => {
       response.json({ res });
     })
