@@ -8,6 +8,8 @@ var rateLimit = require("express-rate-limit");
 
 var app = express();
 
+var index = require("./routes/index");
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use("/", index);
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
@@ -60,7 +64,7 @@ app.post("/api/geocoder/address", (request, response) => {
   let geoCoder = nodeGeocoder(options);
 
   geoCoder
-    .geocode({ `${addr}` })
+    .geocode({ addr })
     .then(res => {
       response.json({ res });
     })
